@@ -1,0 +1,171 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Space Grotesk", "Sora", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* deep forest palette */
+  --color-ink: #030b07;
+  --color-surface: #07140d;
+  --color-surface-2: #0c1d13;
+  --color-surface-3: #12291b;
+  --color-line: #1b3a29;
+
+  --color-text: #ecf7ef;
+  --color-muted: #8fb09b;
+  --color-faint: #5f8270;
+
+  --color-spark: #4ade80;
+  --color-spark-dim: #22b866;
+  --color-glow: #e6f26a;
+  --color-pulse: #2dd4bf;
+  --color-sky: #38bdf8;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+@keyframes pulse-slow {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+@keyframes cloud-drift {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(22px); }
+}
+@keyframes spin-border {
+  to { transform: rotate(360deg); }
+}
+@keyframes shimmer {
+  0% { transform: translateX(-120%) skewX(-18deg); }
+  100% { transform: translateX(220%) skewX(-18deg); }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-2.5deg); }
+  50% { transform: rotate(2.5deg); }
+}
+/* travelling dots on pipeline connectors */
+@keyframes flow-x {
+  0% { opacity: 0; transform: translateX(-4px); }
+  15%, 85% { opacity: 1; }
+  100% { transform: translateX(calc(var(--flow-len, 56px) - 4px)); opacity: 0; }
+}
+@keyframes flow-y {
+  0% { opacity: 0; transform: translateY(-4px); }
+  15%, 85% { opacity: 1; }
+  100% { transform: translateY(calc(var(--flow-len, 40px) - 4px)); opacity: 0; }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+::selection {
+  background: var(--color-spark);
+  color: #04101a;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-ink);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-3);
+  border-radius: 999px;
+  border: 2px solid var(--color-ink);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-spark-dim);
+}
+
+/* light theme overrides */
+html.light {
+  --color-ink: #f0f8f2;
+  --color-surface: #ffffff;
+  --color-surface-2: #e8f4ec;
+  --color-surface-3: #d9ebe0;
+  --color-line: #cfe3d6;
+  --color-text: #0a1f13;
+  --color-muted: #446352;
+  --color-faint: #6f8c7c;
+  --color-spark: #16a34a;
+  --color-spark-dim: #0f8a3c;
+  --color-glow: #b8c92a;
+  --color-pulse: #0d9488;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+.animate-pulse-slow {
+  animation: pulse-slow 3.5s ease-in-out infinite;
+}
+.animate-marquee {
+  animation: marquee 28s linear infinite;
+}
+.animate-sway {
+  transform-origin: 50% 100%;
+  animation: sway 5s ease-in-out infinite;
+}
+.flow-dot-x { animation: flow-x 1.8s linear infinite; }
+.flow-dot-y { animation: flow-y 1.8s linear infinite; }
+
+/* fixed 3D forest layer behind every page */
+.nature-bg { opacity: 0.55; }
+html.light .nature-bg { opacity: 0.4; }
+
+.grain {
+  pointer-events: none;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  opacity: 0.035;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+.text-gradient {
+  background: linear-gradient(100deg, var(--color-spark) 0%, var(--color-pulse) 50%, var(--color-glow) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass {
+  background: color-mix(in srgb, var(--color-surface) 62%, transparent);
+  border: 1px solid var(--color-line);
+  backdrop-filter: blur(18px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
